@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern & Trendy Web</title>
+    <style>
+        /* 트렌디한 느낌을 위해 널리 쓰이는 Pretendard 폰트 적용 */
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        :root {
+            --bg-color: #0f172a; /* 깊은 네이비/블랙 배경 */
+            --text-color: #f8fafc;
+            --primary: #3b82f6; /* 포인트 컬러: 블루 */
+            --secondary: #8b5cf6; /* 포인트 컬러: 퍼플 */
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 1. 글래스모피즘 네비게이션 바 */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(12px); /* 배경을 흐리게 처리 */
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+            transition: padding 0.3s ease, background 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 1rem 5%;
+            background: rgba(15, 23, 42, 0.85);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            /* 텍스트 그라데이션 */
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* 2. 히어로(메인) 섹션 */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 5%;
+            position: relative;
+        }
+
+        /* 배경 빛번짐(Glow) 효과 */
+        .glow-circle {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: var(--secondary);
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.4;
+            z-index: -1;
+        }
+
+        .glow-1 { top: 10%; left: -10%; }
+        .glow-2 { bottom: 10%; right: -10%; background: var(--primary); opacity: 0.3; }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s ease forwards;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s ease 0.2s forwards; /* 0.2초 지연 */
+        }
+
+        /* 모던한 버튼 디자인 */
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s ease 0.4s forwards;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+        }
+
+        /* 3. 특징(Features) 카드 섹션 */
+        .features {
+            padding: 8rem 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        /* JS로 제어할 등장 애니메이션 클래스 */
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: #94a3b8;
+        }
+
+        /* 키프레임 애니메이션 */
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 반응형 처리 */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 상단 네비게이션 -->
+    <nav id="navbar">
+        <div class="logo">NextGen</div>
+        <div class="nav-links">
+            <a href="#home">홈</a>
+            <a href="#features">기능</a>
+            <a href="#contact">문의하기</a>
+        </div>
+    </nav>
+
+    <!-- 배경 빛 번짐 요소 -->
+    <div class="glow-circle glow-1"></div>
+    <div class="glow-circle glow-2"></div>
+
+    <!-- 메인 섹션 -->
+    <section class="hero" id="home">
+        <h1>미래를 향한 <br><span class="gradient-text">새로운 웹 경험</span></h1>
+        <p>트렌디한 다크 모드, 글래스모피즘, 그리고 스크롤 반응형 애니메이션을 활용하여 사용자에게 강렬한 첫인상을 남깁니다.</p>
+        <button class="btn">프로젝트 시작하기</button>
+    </section>
+
+    <!-- 카드 섹션 -->
+    <section class="features" id="features">
+        <div class="card">
+            <div class="card-icon">🎨</div>
+            <h3>글래스모피즘 UI</h3>
+            <p>투명도와 배경 블러 효과를 결합하여 화면에 깊이감 있고 세련된 인터페이스를 제공합니다.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">⚡</div>
+            <h3>인터랙티브 애니메이션</h3>
+            <p>사용자의 스크롤 위치를 감지하여 부드럽게 등장하는 요소들로 생동감을 더했습니다.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">🌌</div>
+            <h3>네온 글로우 이펙트</h3>
+            <p>자칫 심심할 수 있는 다크 테마 배경에 은은한 빛 번짐 효과를 주어 밋밋함을 없앴습니다.</p>
+        </div>
+    </section>
+
+    <script>
+        // 1. 네비게이션 바 스크롤 반응 (스크롤 시 배경 투명도 및 패딩 변경)
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 2. 스크롤 위치에 따른 카드 등장 애니메이션 (Intersection Observer 활용)
+        const cards = document.querySelectorAll('.card');
+        
+        const observerOptions = {
+            threshold: 0.2, // 요소가 20% 보일 때 실행
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // 한 번 등장한 후에는 다시 애니메이션이 실행되지 않도록 관찰 해제
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        cards.forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
